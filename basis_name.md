@@ -1,7 +1,7 @@
 ## Convert Basis # to a Basis Name
 
 ```
-=SWITCH(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))),
+=SWITCH(IFERROR(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))),-1),
 1, "LIST",
 2, "INTERNAL",
 3, "UMSP",
@@ -17,6 +17,6 @@
 29, "Strgc List",
 30, "Strgc Cost",
 31, "AVG-COST",
-VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1)))
+INDIRECT(ADDRESS(ROW(),COLUMN()-1))
 )
 ```
