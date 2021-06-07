@@ -2,43 +2,29 @@
 
 ## Non table version
 ```
-=IF(LEFT(INDIRECT(ADDRESS(ROW(),COLUMN()+1)),1)="$","NET",SWITCH(IFERROR(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))),-1), 1, "LIST",
-2, "INTERNAL",
-3, "UMSP",
-4, "CMP",
-5, "STD-COST",
-6, "REP-COST",
-8, "AVG-COST",
-9, "LASTCOST",
-21, "Lnd Cost",
-22, "Avg Lnd",
-25, "Ord COGS",
-28, "Ord Comm",
-29, "Strgc List",
-30, "Strgc Cost",
-31, "AVG-COST",
-INDIRECT(ADDRESS(ROW(),COLUMN()-1))
-))
+=SWITCH(left(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))),1),
+"*", VALUE(MID(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))), 2, LEN(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1)))))),
+"X", VALUE(MID(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))), 2, LEN(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1)))))),
+"D", 1 / VALUE(VALUE(MID(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))), 2, LEN(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))))))),
+"+", 1 - VALUE(MID(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))), 2, LEN([VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))))))/ 100,
+"-", 1 - VALUE(MID(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))), 2, LEN(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1)))))) / 100,
+"G", 1 / (1 - VALUE(MID(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1))), 3, LEN(VALUE(INDIRECT(ADDRESS(ROW(),COLUMN()-1)))))) / 100),
+"$", 1,
+"ERROR",
+)
 ```
 
 ## Table Version
 
 ```
-=IF(LEFT([@Formula], 1) = "$", "NET", SWITCH(IFERROR(VALUE([@[Basis '#]]), -1),
-1, "LIST",
-2, "INTERNAL",
-3, "UMSP",
-4, "CMP",
-5, "STD-COST",
-6, "REP-COST",
-8, "AVG-COST", 
-9, "LASTCOST",
-21, "Lnd Cost",
-22, "Avg Lnd", 
-25, "Ord COGS", 
-28, "Ord Comm",
-29, "Strgc List",
-30, "Strgc Cost",
-31, "AVG-COST",
-[@[Basis '#]]))
+=SWITCH(LEFT([@Formula], 1),
+"*", VALUE(MID([@Formula], 2, LEN([@Formula]))),
+"X", VALUE(MID([@Formula], 2, LEN([@Formula]))),
+"D", 1 / VALUE(VALUE(MID([@Formula], 2, LEN([@Formula])))),
+"+", 1 - VALUE(MID([@Formula], 2, LEN([@Formula])))/ 100,
+"-", 1 - VALUE(MID([@Formula], 2, LEN([@Formula]))) / 100,
+"G", 1 / (1 - VALUE(MID([@Formula], 3, LEN([@Formula]))) / 100),
+"$", 1,
+"ERROR"
+)
 ```
